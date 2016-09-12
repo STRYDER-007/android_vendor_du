@@ -81,9 +81,21 @@ include vendor/du/config/packages.mk
 
 PRODUCT_PACKAGE_OVERLAYS += vendor/du/overlay/common
 
+TARGET_BOOTANIMATION_480P := $(shell \
+  if [ $(TARGET_SCREEN_WIDTH) -le 720 ]; then \
+    echo 'true'; \
+  else \
+    echo ''; \
+  fi )
+
 # Boot Animation
+ifeq ($(TARGET_BOOTANIMATION_480P),true)
+PRODUCT_COPY_FILES += \
+    vendor/du/prebuilt/common/media/bootanimation-480p.zip:system/media/bootanimation.zip
+else
 PRODUCT_COPY_FILES += \
     vendor/du/prebuilt/common/media/bootanimation.zip:system/media/bootanimation.zip
+endif
 
 # HFM Files
 PRODUCT_COPY_FILES += \
